@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+
+<div id="navbar" class="navbar"></div>
+<!--{{context.0}}-->
+{{country_1}}
+<div id="country_one">
+{{country_2}}
+
+<button id="myButton">Call Python Function</button>
+</div>
+
+<div id="country_two">
+
+</div>
+
+<script>
+    // Attach an event listener to the button
+    document.getElementById("myButton").addEventListener("click", function () {
+        // Call the Python function using an AJAX request
+        fetch('/call_custom_function/')
+            .then(response => response.text())
+            .then(data => {
+                alert(data); // Display the result from the Python function
+            });
+    });
+</script>
+</body>
+</html>
