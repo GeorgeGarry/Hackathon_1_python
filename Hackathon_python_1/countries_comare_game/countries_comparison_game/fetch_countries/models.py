@@ -1,36 +1,34 @@
-from random import random
-
+from random import random, shuffle
+# import random
 # import requests
 from django.db import models
 
 
 # Create your models here.
-# def fetch_random_countries():
-#     all_countries = []
-#     url = f'https://restcountries.com/v3.1/all?fields=name,flags,population,id'
-#     response = requests.get(url)
-#
-#     if response.status_code == 200:
-#         countries = response.json()
-#         for i in range(len(countries)):
-#             one_country = {
-#                 "id": i + 1,
-#                 "names": {"common_name": countries[i]['name']['common'],
-#                           "official_name": countries[i]['name']['official']
-#                           },
-#                 "flag": countries[i]['flags']['png'],
-#                 "population": countries[i]['population']
-#             }
-#             all_countries.append(one_country)
-#
-#         return all_countries
-#         # return random.sample(countries)
-#     else:
-#         print(f"Failed to fetch data. Status code: {response.status_code}")
-#         return []
-#
-#
-# all_countries_new = fetch_random_countries()
-# # print(fetch_random_countries())
-# for i in range(10):
-#     print(all_countries_new[i])
+
+class Game(models.Model):
+    # Define fields for the Game model
+    # You can add any other fields you need
+
+    # Initialize the countries in country_2 (exclude one country)
+    def __init__(self, *args, **kwargs):
+        super(Game, self).__init__(*args, **kwargs)
+        self.country_1 = []  # Initialize an empty list for country_1
+        self.country_2 = []  # Initialize an empty list for country_2
+
+        # Logic to populate country_2 initially with all countries except one
+        self.all_countries = (list(args)) # Replace with your list of countries
+        shuffle(self.all_countries)
+        self.country_2 = self.all_countries.pop()  # Copy all countries to country_2
+        self.country_1.append(self.country_2.pop())  # Remove and add one country to country_1
+
+    # Method to move a country from country_2 to country_1
+    # def move_country(self):
+    #     if self.country_2:
+    #         country_to_move = self.country_2.pop()
+    #         self.country_1.append(country_to_move)
+
+    def check_fill(self):
+        print(self.all_countries)
+        # print("country_2:", self.country_2)
+        # print("country_1:", self.country_1)
