@@ -32,3 +32,34 @@ class Game(models.Model):
         print(self.all_countries)
         # print("country_2:", self.country_2)
         # print("country_1:", self.country_1)
+
+    # #функция получения названия стран из листа для мб дальнейшего отображения
+    # def get_country_names(self):
+    #     return self.country_1[0]['name'], self.country_2[-1]['name']
+
+    # # тут логика сравнения стран, но я не уверен что она имеет смысл, и все еще не уверен про получение населения страны
+    # def move_country(self, user_input):
+    #     if self.country_2:
+    #         country_to_move = self.country_2.pop()
+    #         if user_input == 'more' and country_to_move['population'] > self.country_1[0]['population']:
+    #             self.country_1.append(country_to_move)
+    #         elif user_input == 'less' and country_to_move['population'] < self.country_1[0]['population']:
+    #             self.country_1.append(country_to_move)
+    #         else:
+    #             self.country_2.append(country_to_move)
+    #     else:
+            # #тут я хз что делать дальше
+            # pass
+
+
+    ######## Лови еще для вьюс функцию для передачи обьектов на фронт через импорт моделей и их функций
+# from django.shortcuts import render
+# from .models import Game
+
+# def game_view(request):
+#     game = Game.objects.first()  
+#     context = {
+#         'country_1': game.country_1[0],
+#         'country_2': game.country_2[-1],
+#     }
+#     return render(request, 'game.html', context)
