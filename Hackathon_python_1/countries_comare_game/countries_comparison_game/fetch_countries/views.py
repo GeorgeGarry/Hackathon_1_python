@@ -1,12 +1,14 @@
 import json
 import requests
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
 from .models import Game
 
 # Create your views here.
 def generate_main_page(request):
-    def fetch_random_countries():
+    def fetch_all_countries():
         all_countries = []
         url = f'https://restcountries.com/v3.1/all?fields=name,flags,population,id'
         response = requests.get(url)
@@ -23,23 +25,25 @@ def generate_main_page(request):
                     "population": countries[i]['population']
                 }
                 all_countries.append(one_country)
-            game = Game(all_countries)
-            game.check_fill()
-
             return all_countries
-            # return random.sample(countries)
         else:
             print(f"Failed to fetch data. Status code: {response.status_code}")
             return []
+    fetched_countries = fetch_all_countries()
+    global game
+    game = Game(fetched_countries)
+    # game.check_fill()
+    country_1 = game.country_1
+    country_2 = game.country_2
+    # print("print in view: ", country_1)
 
-    fetched_countries = fetch_random_countries()
-    # print(fetched_countries)
     context = {
         "context": fetched_countries,
-        "country_1": "Israel",
-        "country_2": "Panama",
+        "country_1": country_1,
+        "country_2": country_2,
+        "total_score": game.total_score
     }
-    return render(request, 'index.html', context)
+    return render(request, 'landing.html', context)
 
 
 # def call_custom_function(request):
@@ -48,13 +52,37 @@ def generate_main_page(request):
 #     return "<h1>it worked! haleluja!</h1>"
 
 
+def next_move(request):
+    # game.check_user_win()
+    if game.check_user_win():
+        game.move_country()
+    context = {
+        "country_1": game.country_1,
+        "country_2": game.country_2,
+    }
+
+    return render(request, 'landing.html', context)
+
 def call_custom_function(request):
-    # Decode the bytes object into a string
+    user_choice=None
     data_str = request.body.decode('utf-8')
-    print("data_str: ", data_str)
-    # Parse the string as JSON
-    data_json = json.loads(data_str)
-    print("data_json: ", data_json)
-    # Your logic here
-    result = "This is a response from the Django view."
-    return JsonResponse({'country_1': result})
+    user_input = data_str.split("my_bool=")[1]
+    if user_input == "Less":
+        user_choice = False
+    else:
+        user_choice = True
+    print("user_choice: ", user_choice)
+    if game.check_user_win(user_choice):
+        game.move_country()
+        game.plus_high_score()
+        context = {
+            "country_1": game.country_1,
+            "country_2": game.country_2,
+            "total_score": game.total_score
+        }
+
+        return render(request, 'landing.html', context)
+    else:
+        alert_message = "Sorry, you've lost. Try again!"
+        return render(request, 'landing.html', {'alert_message': alert_message})
+

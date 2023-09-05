@@ -10,17 +10,28 @@
 
 <div id="navbar" class="navbar"></div>
 <!--{{context.0}}-->
-{{country_1}}
 <div id="country_one">
-{{country_2}}
-
+country_1
+{% for item in country_1 %}
+    {% if forloop.last %}
+        {{ item.names.common_name }}
+    {% endif %}
+{% endfor %}
 
 </div>
 
 <div id="country_two">
+country_2
+{% for item in country_2 %}
+    {% if forloop.last %}
+        {{ item.names.common_name }}
+    {% endif %}
+{% endfor %}
 
 </div>
-<button id="myButton">Call Python Function</button>
+<button id="my_button_bigger">bigger</button>
+<button id="my_button_smaller">smaller</button>
+
 <!--<script>-->
 <!--&lt;!&ndash;    // Attach an event listener to the button&ndash;&gt;-->
 <!--    document.getElementById("myButton").addEventListener("click", function () {-->
@@ -41,8 +52,6 @@
         const requestData = {
             key1: "value1",
             key2: "value2",
-
-
         };
 
         // Configure the fetch request
