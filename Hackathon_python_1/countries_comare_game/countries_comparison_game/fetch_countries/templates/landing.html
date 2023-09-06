@@ -7,39 +7,39 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@600;700&family=Instrument+Serif:ital@0;1&family=Pacifico&family=Quicksand:wght@300;400;500;600;700&family=Raleway:wght@400;600;700;800;900&family=Rubik+Iso&family=Russo+One&family=Yeseva+One&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" integrity="sha384-8Q6tZ5JQjJW7+5vZJv5z5v8QzQwQJyXJzJQ3z5zJZy5z3zJz8zJz8zJz8zJz8zJz" crossorigin="anonymous">
+<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" integrity="sha384-8Q6tZ5JQjJW7+5vZJv5z5v8QzQwQJyXJzJQ3z5zJZy5z3zJz8zJz8zJz8zJz8zJz" crossorigin="anonymous">-->
     <style>
         body {
             background-color: #1c1e26;
             color: #fff;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+
         }
         .card {
             background-color: #2b2d3c;
             color: #fff;
         }
-        .card-header {
-            background-color: #1c1e26;
-            border-bottom: none;
-        }
-        .card-title {
-            font-size: 1.5rem;
-            margin-bottom: 0;
-        }
         .card-text {
-            font-size: 1.25rem;
+            font-size: 2rem;
             margin-bottom: 0;
         }
         .flag-img {
             max-width: 100%;
             height: auto;
+            margin: 30px;
         }
+
         .btn-more, .btn-less {
-            font-family: 'Rubik Iso', sans-serif;
-        background-color: black;
-        color: white;
-        border-radius: 20px;
-        padding: 15px 30px;
-        border: none;
+            font-family: 'Instrument Serif', sans-serif;
+            background-color: black;
+            color: white;
+            border-radius: 20px;
+            padding: 20px 40px;
+            border: none;
+            font-size: 30px;
+            font-weight: bold;
         }
         .btn-more:hover {
             background-color: #3e8e41;
@@ -49,6 +49,32 @@
             background-color: #bc4e68;
             border-color: #bc4e68;
         }
+        .card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .navbar {
+            text-align: center;
+             margin: auto;
+        }
+        .navbar h1 {
+            text-align: center;
+            border: 2px solid #7371FC;
+<!--            background-color: #737;-->
+            padding: 10px; /* Adjust the padding as needed */
+            display: inline-block; /* Make the h1 a block-level element for the border */
+            border-radius: 5px; /* Add rounded corners to make it look like a button */
+        }
+        h1{
+            margin: 1%;
+            padding: 0.5%
+        }
+
+
+
     </style>
 </head>
 <body>
@@ -58,100 +84,36 @@
         window.location.href = 'http://127.0.0.1:8000/landing/main/';
     </script>
 {% endif %}
-    <nav class="">
-        <h3>Your score is: {{total_score}}</h3>
+    <nav class="navbar">
+        <h1>Your score is: {{total_score}}</h1>
     </nav>
-    <div class="container my-5">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title">{{ country_1.name }}</h2>
-                    </div>
-                    <div class="card-body">
-                        {% for item in country_1 %}
-                            {% if forloop.last %}
-                                <p class="card-text">Name: {{ item.names.common_name }} </p>
-                                <p class="card-text">Official name: {{ item.names.official_name }} </p>
-                                <img class="flag-img" src="{{ item.flag }}" alt="flag"/>
-                                <p class="card-text">Population: {{ item.population }} </p>
+        <div class="card">
+           <div class="card-body">
+                {% for item in country_1 %}
+                    {% if forloop.last %}
+                        <p class="card-text">Name: {{ item.names.common_name }} </p>
+                        <p class="card-text">Official name: {{ item.names.official_name }} </p>
+                        <img class="flag-img" src="{{ item.flag }}" alt="flag"/>
+                        <p class="card-text">Population: {{ item.population }} </p>
 
-                            {% endif %}
-                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+           </div>
+            <div class="card-body">
+                {% for item in country_2 %}
+                    {% if forloop.last %}
+                        <p class="card-text">Name: {{ item.names.common_name }} </p>
+                        <p class="card-text">Official name: {{ item.names.official_name }} </p>
+                        <img class="flag-img" src="{{ item.flag }}" alt="flag"/>
 
-                    </div>
-                </div>
+                    {% endif %}
+                {% endfor %}
+                 <form id="form" method="post" action="{% url 'next-move' %}">
+                        {% csrf_token %}
+                    <input id="more_btn" class="btn btn-more" type="submit" name="my_bool" value=More>
+                    <input id="less_btn" class="btn btn-less" type="submit" name="my_bool" value=Less>
+                </form>
             </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title">{{ country_2.name }}</h2>
-                    </div>
-                    <div class="card-body">
-                        {% for item in country_2 %}
-                            {% if forloop.last %}
-                                <p class="card-text">Name: {{ item.names.common_name }} </p>
-                                <p class="card-text">Official name: {{ item.names.official_name }} </p>
-                                <img class="flag-img" src="{{ item.flag }}" alt="flag"/>
-                                <p class="card-text">Population: {{ item.population }} </p>
-
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                    <form id="form1" method="post" action="{% url 'call_custom_function' %}">
-                       {% csrf_token %}
-                      <input type="submit" name="my_bool" value=More>
-                      <input type="submit" name="my_bool" value=Less>
-                    </form>
-                    <div class="card-footer">
-                        <button id="more_btn" class="btn btn-more" onclick="document.getElementById('more-form').submit();">MORE</button>
-                        <button id="less_btn" class="btn btn-less" onclick="document.getElementById('less-form').submit();">LESS</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-+QJz9JlJxRJvJ0fzvz+5J8yJ1Jf5WvJZ8wzQjvJZ6qyJ5Jz8zJz8zJz8zJz8zJz" crossorigin="anonymous"></script>
-    <script>
-    // Attach an event listener to the button
-    document.getElementById("myButton").addEventListener("click", function () {
-        // Define the data you want to send (as an example, sending JSON data)
-        const requestData = {
-            player_choice: "value1"
-
-        };
-
-        // Configure the fetch request
-        fetch('/landing/call_custom_function/', {
-            method: 'POST', // Use the appropriate HTTP method (POST in this case)
-            headers: {
-                'X-CSRFToken': getCookie('csrftoken'), // Include the CSRF token from cookies,
-                'Content-Type': 'application/json', // Set the content type to JSON
-            },
-            body: JSON.stringify(requestData), // Convert the data to JSON format
-        })
-        .then(response => response.text())
-        .then(data => {
-            console.log(data);
-            document.getElementById("country_one").innerHTML = data; // Display the result from the Python function
-        });
-    });
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.startsWith(name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-</script>
 </body>
 
 </html>

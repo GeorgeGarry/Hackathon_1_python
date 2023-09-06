@@ -1,21 +1,14 @@
-# from random import random, shuffle, randint
-
 import random
-# import requests
 from django.db import models
 
 
 # Create your models here.
 
 class Game(models.Model):
-    # Define fields for the Game model
-    # You can add any other fields you need
-
-    # Initialize the countries in country_2 (exclude one country)
     def __init__(self, *args, **kwargs):
         super(Game, self).__init__(*args, **kwargs)
-        self.country_1 = []  # Initialize an empty list for country_1
-        self.country_2 = []  # Initialize an empty list for country_2
+        self.country_1 = []
+        self.country_2 = []
         self.total_score = 0
         tuple_to_list_tmp = []
         for i in range(len(args[0])):
@@ -26,12 +19,6 @@ class Game(models.Model):
         self.country_1 = [self.all_countries[-1]]
         self.all_countries.pop()
         self.country_2 = self.all_countries  # Copy all countries to country_2
-
-    # Method to move a country from country_2 to country_1
-    # def move_country(self):
-    #     if self.country_2:
-    #         country_to_move = self.country_2.pop()
-    #         self.country_1.append(country_to_move)
 
     def check_fill(self):
         print(len(self.all_countries))
@@ -61,14 +48,3 @@ class Game(models.Model):
     def plus_high_score(self):
         self.total_score += 1
 
-    ######## Лови еще для вьюс функцию для передачи обьектов на фронт через импорт моделей и их функций
-# from django.shortcuts import render
-# from .models import Game
-
-# def game_view(request):
-#     game = Game.objects.first()  
-#     context = {
-#         'country_1': game.country_1[0],
-#         'country_2': game.country_2[-1],
-#     }
-#     return render(request, 'game.html', context)
